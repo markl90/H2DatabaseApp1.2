@@ -2,14 +2,10 @@ package H2Interaction;
 
 import org.h2.jdbcx.JdbcDataSource;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-//import static H2Interaction.Constants.*;
 
 public class DatabaseConnection {
 
@@ -17,33 +13,18 @@ public class DatabaseConnection {
     Properties properties;
     JdbcDataSource  dataSource;
 
-    public DatabaseConnection(String propertiesFile) throws IOException {
+    public DatabaseConnection(Properties propertiesFile) throws IOException {
 
-        properties = PropertyReader.loadFromFile(propertiesFile);
+        this.properties = propertiesFile;
         System.out.println("Connecting to database.");
-//        try {
-//            Class.forName(properties.getProperty("JDBC_DRIVER"));
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            connection = DriverManager.getConnection(properties.getProperty("DB_URL"),properties.getProperty("USERNAME"),"");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            initialContext = new InitialContext();
-//            dataSource = (MysqlDataSource) initialContext.lookup("jdbc:h2:tcp://localhost/~/test");
-//        } catch (NamingException e) {
-//            e.printStackTrace();
-//        }
+
         dataSource = new JdbcDataSource();
         dataSource.setURL(properties.getProperty("DB_URL"));
         dataSource.setUser(properties.getProperty("USERNAME"));
         dataSource.setPassword("");
 
         try {
-            dataSource.getConnection();
+            connection = dataSource.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,16 +42,6 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
-
-    public Connection getDataSource(){
-        try {
-            connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
 
 
 }

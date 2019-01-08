@@ -8,6 +8,8 @@
     <artifactId>databaseApp</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
+
         <dependencies>
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -21,12 +23,13 @@
                 <version>3.4.6</version>
             </dependency>
 
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>8.0.13</version>
-            </dependency>
+
         </dependencies>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
 
 </project>

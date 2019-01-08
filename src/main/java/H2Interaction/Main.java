@@ -1,32 +1,33 @@
 package H2Interaction;
 
-import org.apache.ibatis.javassist.ClassPath;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
+import java.util.Properties;
 
 public class Main {
+
 
     DatabaseConnection DBconnection;
     Connection connection;
     QueryExecutor executor;
     FileInput fileInput;
+    Properties properties;
+    FileInputStream input;
 
-    String path = new File("src\\main\\resources\\backup4.sql").getAbsolutePath();
+    String path = getClass().getClassLoader().getResource("backup4.sql").getPath();
     String backup = "SCRIPT TO '"+path+"';";
-
-
-    String properties = getClass().getClassLoader().getResource("config.properties").getPath();
-
-            //this.getClass().getClassLoader().getResource("config.properties").getPath();
-
-            //new File("src\\main\\resources\\config.properties").getAbsolutePath();
 
     public Main() throws IOException {
 
+       try( FileInputStream fis = new FileInputStream(getClass().getClassLoader().getResource("config.properties").getPath())) {
+           properties = new Properties();
+           properties.load(fis);
+       }
         DBconnection = new DatabaseConnection(properties);
-        connection = DBconnection.getDataSource();
+        connection = DBconnection.getConnection();
 
 
         executor = new QueryExecutor(connection);
@@ -47,9 +48,7 @@ public class Main {
     public void closeResources(){
         executor.closeStatement();
         DBconnection.closeConnection();
-
     }
-
 
 
     public static void main(String[] args) throws IOException {
