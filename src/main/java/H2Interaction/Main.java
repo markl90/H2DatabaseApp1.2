@@ -1,5 +1,8 @@
 package H2Interaction;
 
+import org.apache.ibatis.javassist.ClassPath;
+
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 
@@ -10,22 +13,15 @@ public class Main {
     QueryExecutor executor;
     FileInput fileInput;
 
-    String createTable =  "CREATE TABLE   REGISTRATION " +
-            "(`id` INTEGER not NULL, " +
-            " first VARCHAR(255), " +
-            " last VARCHAR(255), " +
-            " age INTEGER, " +
-            " PRIMARY KEY ( id ))";
-    String data = "INSERT INTO Registration " + "VALUES (100, 'Mark', 'Ledwold', 28)";
-    String data2 = "INSERT INTO Registration " + "VALUES (101, 'John', 'Smith', 25)";
-    String dropTable = "DROP TABLE registration, user_details";
-    String selectFromTable = "SELECT id, first, last, age FROM Registration";
-    String updateRecord = "UPDATE registration SET age = 30 where id = 101";
-    String deleteRecord = "DELETE FROM registration WHERE id = 101";
+    String path = new File("src\\main\\resources\\backup4.sql").getAbsolutePath();
+    String backup = "SCRIPT TO '"+path+"';";
 
-    String backup = "SCRIPT TO 'C:\\Repos\\databaseApp1.1\\src\\main\\resources\\backup3.sql';";
 
-    String properties = "C:\\Repos\\databaseApp1.2\\src\\main\\resources\\config.properties";
+    String properties = getClass().getClassLoader().getResource("config.properties").getPath();
+
+            //this.getClass().getClassLoader().getResource("config.properties").getPath();
+
+            //new File("src\\main\\resources\\config.properties").getAbsolutePath();
 
     public Main() throws IOException {
 
@@ -34,14 +30,14 @@ public class Main {
 
 
         executor = new QueryExecutor(connection);
-        executor.executeUpdate(dropTable);
-        fileInput = new FileInput(connection, "C:\\Repos\\databaseApp1.1\\src\\main\\resources\\Sample-SQL-File-100-Rows.sql"); //Sample-SQL-File-100-Rows.sql
-        executor.executeUpdate(createTable);
-        executor.executeUpdate(data);
-        executor.executeUpdate(data2);
-        executor.executeQuery(selectFromTable);
-        executor.executeUpdate(updateRecord);
-        executor.executeQuery(selectFromTable);
+        executor.executeUpdate(TestData.dropTable);
+        fileInput = new FileInput(connection, "Sample-SQL-File-100-Rows.sql");
+        executor.executeUpdate(TestData.createTable);
+        executor.executeUpdate(TestData.data);
+        executor.executeUpdate(TestData.data2);
+        executor.executeQuery(TestData.selectFromTable);
+        executor.executeUpdate(TestData.updateRecord);
+        executor.executeQuery(TestData.selectFromTable);
        // executor.executeUpdate(deleteRecord);
        // executor.executeQuery(selectFromTable);
         executor.executeQuery(backup);

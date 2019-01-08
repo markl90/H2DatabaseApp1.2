@@ -7,9 +7,6 @@ import java.util.Properties;
 
 public class PropertyReader {
 
-    Properties properties = new Properties();
-    //FileInputStream input = new FileInputStream("C:\\Repos\\databaseApp1.2\\src\\main\\resources\\config.properties"); //C:\Repos\databaseApp1.2\src\main\resources\config.properties
-
 
     public static Properties loadFromFile(String file) throws IOException, FileNotFoundException {
         Properties properties = new Properties();
