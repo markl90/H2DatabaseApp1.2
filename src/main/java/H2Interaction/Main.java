@@ -21,12 +21,11 @@ public class Main {
     public Main() throws IOException {
         establishConnection();
         executor = new QueryExecutor(connection);
-        scriptInput = new ScriptInput(connection, "Sample.sql");
-
 
         SchemaUpgrader upgrader = new SchemaUpgrader();
         upgrader.initialiseConnection("config.properties");
         upgrader.checkLastUpgrade();
+        upgrader.applyUpgrade(1, "Sample.sql", "Version 1.0.0 - initial schema");
 
         executor.executeQuery(backup());
         closeResources();

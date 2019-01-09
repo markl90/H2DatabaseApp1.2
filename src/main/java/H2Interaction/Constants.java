@@ -2,6 +2,9 @@ package H2Interaction;
 
 public class Constants {
 
+    //SchemaUpgrade
+    static final String UPGRADE_TABLE = "application_schema_upgrade";
+
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.h2.Driver";
     static final String DB_URL = "jdbc:h2:tcp://localhost/~/test";   // jdbc:h2:~/test
