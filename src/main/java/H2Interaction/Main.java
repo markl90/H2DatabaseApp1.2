@@ -1,38 +1,40 @@
 package H2Interaction;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class Main {
 
 
-    DatabaseConnection DBconnection;
+    DatabaseConnection dbConnection;
     Connection connection;
     QueryExecutor executor;
-    FileInput fileInput;
+    ScriptInput scriptInput;
     Properties properties;
     FileInputStream input;
 
-    String path = getClass().getClassLoader().getResource("backup4.sql").getPath();
-    String backup = "SCRIPT TO '"+path+"';";
+
 
     public Main() throws IOException {
 
-       try( FileInputStream fis = new FileInputStream(getClass().getClassLoader().getResource("config.properties").getPath())) {
+       try( InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties")) {
            properties = new Properties();
-           properties.load(fis);
+           properties.load(is);
        }
-        DBconnection = new DatabaseConnection(properties);
-        connection = DBconnection.getConnection();
+        dbConnection = new DatabaseConnection(properties);
+        connection = dbConnection.getConnection();
 
 
         executor = new QueryExecutor(connection);
         executor.executeUpdate(TestData.dropTable);
-        fileInput = new FileInput(connection, "Sample-SQL-File-100-Rows.sql");
+        scriptInput = new ScriptInput(connection, "Sample-SQL-File-100-Rows.sql");
         executor.executeUpdate(TestData.createTable);
         executor.executeUpdate(TestData.data);
         executor.executeUpdate(TestData.data2);
@@ -41,13 +43,26 @@ public class Main {
         executor.executeQuery(TestData.selectFromTable);
        // executor.executeUpdate(deleteRecord);
        // executor.executeQuery(selectFromTable);
-        executor.executeQuery(backup);
+        executor.executeQuery(backup());
         closeResources();
     }
 
     public void closeResources(){
         executor.closeStatement();
-        DBconnection.closeConnection();
+        dbConnection.closeConnection();
+    }
+
+    public String backup(){
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        String formattedDate = formatter.format(LocalDate.now());
+
+        String userDirectory = System.getProperty("user.dir");
+        Path resourceDirectory = Paths.get("\\src","main","resources\\");
+        String backupName = "\\backup" + formattedDate + ".sql";
+        String path = userDirectory +resourceDirectory + backupName;
+
+        String backupQuery = "SCRIPT TO '"+path+"';";
+        return backupQuery;
     }
 
 
