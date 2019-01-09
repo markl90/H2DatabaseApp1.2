@@ -1,8 +1,12 @@
 package H2Interaction;
 
+import com.sun.istack.internal.NotNull;
+import org.h2.jdbc.JdbcSQLException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -23,8 +27,8 @@ public class SchemaUpgrader {
     public SchemaUpgrader(){}
 
 
-    public void initialiseConnection() {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+    public void initialiseConnection(String propertiesFile) {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(propertiesFile)) {
             properties = new Properties();
             properties.load(is);
             dbConnection = new DatabaseConnection(properties);
@@ -35,9 +39,17 @@ public class SchemaUpgrader {
     }
 
     public void checkLastUpgrade(){
-        String checkTableExists = "SELECT * FROM application_schema_upgrade";
+        String checkTableExists = "SELECT * FROM application_schema_upgrade;";
         executor = new QueryExecutor(connection);
-        executor.executeQuery(checkTableExists);
+        try {
+            ResultSet result = executor.executeQuery(checkTableExists);
+            result.wasNull();
+        } catch (Exception e){
+            System.out.println("application_schema_upgrade not found...");
+            System.out.println("creating table application_schema_upgrade...");
+            createUpgradeTable();
+        }
+
 
     }
 

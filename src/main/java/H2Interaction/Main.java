@@ -21,19 +21,18 @@ public class Main {
     public Main() throws IOException {
         establishConnection();
         executor = new QueryExecutor(connection);
-        executor.executeUpdate(TestData.dropTable);
-        scriptInput = new ScriptInput(connection, "Sample-SQL-File-100-Rows.sql");
-        executor.executeUpdate(TestData.createTable);
-        executor.executeUpdate(TestData.data);
-        executor.executeUpdate(TestData.data2);
-        executor.executeQuery(TestData.selectFromTable);
-        executor.executeUpdate(TestData.updateRecord);
-        executor.executeQuery(TestData.selectFromTable);
-        executor.executeUpdate(TestData.deleteRecord);
-        executor.executeQuery(TestData.selectFromTable);
+        scriptInput = new ScriptInput(connection, "Sample.sql");
+
+
+        SchemaUpgrader upgrader = new SchemaUpgrader();
+        upgrader.initialiseConnection("config.properties");
+        upgrader.checkLastUpgrade();
+
         executor.executeQuery(backup());
         closeResources();
     }
+
+
 
     public void establishConnection(){
         try( InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties")) {
