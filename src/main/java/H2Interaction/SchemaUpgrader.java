@@ -34,7 +34,7 @@ public class SchemaUpgrader {
         }
     }
 
-    public checkLastUpgrade(){
+    public void checkLastUpgrade(){
         String checkTableExists = "SELECT * FROM application_schema_upgrade";
         executor = new QueryExecutor(connection);
         executor.executeQuery(checkTableExists);

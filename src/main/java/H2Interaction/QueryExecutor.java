@@ -26,14 +26,15 @@ public class QueryExecutor {
         }
     }
 
-    public void executeQuery(String query){
+    public ResultSet executeQuery(String query){
+        ResultSet resultSet = null;
         try {
-            ResultSet resultSet = statement.executeQuery(query);
+            resultSet = statement.executeQuery(query);
             System.out.println("Executing Query. \n"+query);
-            extractResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return resultSet;
     }
 
     public void extractResultSet(ResultSet resultSet) throws SQLException {

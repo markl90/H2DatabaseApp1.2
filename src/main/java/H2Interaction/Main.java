@@ -1,6 +1,5 @@
 package H2Interaction;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -18,20 +17,9 @@ public class Main {
     QueryExecutor executor;
     ScriptInput scriptInput;
     Properties properties;
-    FileInputStream input;
-
-
 
     public Main() throws IOException {
-
-       try( InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties")) {
-           properties = new Properties();
-           properties.load(is);
-       }
-        dbConnection = new DatabaseConnection(properties);
-        connection = dbConnection.getConnection();
-
-
+        establishConnection();
         executor = new QueryExecutor(connection);
         executor.executeUpdate(TestData.dropTable);
         scriptInput = new ScriptInput(connection, "Sample-SQL-File-100-Rows.sql");
@@ -41,10 +29,21 @@ public class Main {
         executor.executeQuery(TestData.selectFromTable);
         executor.executeUpdate(TestData.updateRecord);
         executor.executeQuery(TestData.selectFromTable);
-       // executor.executeUpdate(deleteRecord);
-       // executor.executeQuery(selectFromTable);
+        executor.executeUpdate(TestData.deleteRecord);
+        executor.executeQuery(TestData.selectFromTable);
         executor.executeQuery(backup());
         closeResources();
+    }
+
+    public void establishConnection(){
+        try( InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+            properties = new Properties();
+            properties.load(is);
+            dbConnection = new DatabaseConnection(properties);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        connection = dbConnection.getConnection();
     }
 
     public void closeResources(){

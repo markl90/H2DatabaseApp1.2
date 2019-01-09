@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS user_details (
 INSERT INTO `user_details` (`user_id`, `username`, `first_name`, `last_name`) VALUES
 (1, 'rogers63', 'david', 'john'),
 (2, 'mike28', 'rogers', 'paul'),
-(3, 'rivera92', 'david', 'john),
-(4, 'ross95', 'maria', 'sanders),
-(5, 'paul85', 'morris', 'miller'),
+(3, 'rivera92', 'david', 'john'),
+(4, 'ross95', 'maria', 'sanders'),
+(5, 'paul85', 'morris', 'miller'),;
 
