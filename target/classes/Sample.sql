@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS user_details (
   PRIMARY KEY (id)
 );
 
-merge into USER_DETAILS KEY(ID) values (100, 'Mark', 'Ledwold');
+INSERT INTO USER_DETAILS values (100, 'Mark', 'Ledwold');
 
 
 
