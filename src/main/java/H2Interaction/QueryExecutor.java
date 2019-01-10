@@ -1,9 +1,13 @@
 package H2Interaction;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class QueryExecutor {
 
@@ -51,6 +55,19 @@ public class QueryExecutor {
 
     }
 
+    public void backup(){
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        String formattedDate = formatter.format(LocalDate.now());
+
+        String userDirectory = System.getProperty("user.dir");
+        Path resourceDirectory = Paths.get("\\src","main","resources\\");
+        String backupName = "\\backup" + formattedDate + ".sql";
+        String path = userDirectory +resourceDirectory + backupName;
+
+        String backupQuery = "SCRIPT TO '"+path+"';";
+        executeQuery(backupQuery);
+    }
+
     public void closeStatement(){
         try {
             statement.close();
@@ -58,7 +75,5 @@ public class QueryExecutor {
             e.printStackTrace();
         }
     }
-
-
 
 }

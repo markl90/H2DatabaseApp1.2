@@ -6,7 +6,7 @@ CREATE CACHED TABLE PUBLIC.APPLICATION_SCHEMA_UPGRADE(
     SCRIPT VARCHAR(255),
     UPGRADE_STATUS VARCHAR(255)
 );        
--- 20 +/- SELECT COUNT(*) FROM PUBLIC.APPLICATION_SCHEMA_UPGRADE;             
+-- 22 +/- SELECT COUNT(*) FROM PUBLIC.APPLICATION_SCHEMA_UPGRADE;             
 INSERT INTO PUBLIC.APPLICATION_SCHEMA_UPGRADE(UPGRADE_ID, UPGRADE_DETAILS, SCRIPT, UPGRADE_STATUS) VALUES
 (1, 'Version 1.0.0 - initial schema', 'Sample.sql', 'COMPLETE'),
 (1, 'Version 1.0.0 - initial schema', 'Sample.sql', 'COMPLETE'),
@@ -17,7 +17,8 @@ INSERT INTO PUBLIC.APPLICATION_SCHEMA_UPGRADE(UPGRADE_ID, UPGRADE_DETAILS, SCRIP
 (1, 'Version 1.0.0 - initial schema', 'Sample.sql', 'COMPLETE'),
 (1, 'Version 1.0.0 - initial schema', 'Sample.sql', 'COMPLETE'),
 (1, 'Version 1.0.0 - initial schema', 'Sample.sql', 'COMPLETE'),
-(1, 'Version 1.0.0 - initial schema', 'Sample.sql', 'COMPLETE'); 
+(1, 'Version 1.0.0 - initial schema', 'Sample.sql', 'COMPLETE'),
+(1, 'Version 1.0.0 - initial schema', 'Sample.sql', 'STARTED');
 CREATE CACHED TABLE PUBLIC.USER_DETAILS(
     ID INTEGER NOT NULL,
     FIRST_NAME VARCHAR(50),
