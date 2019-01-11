@@ -19,6 +19,7 @@ public class ScriptInput {
     public void runScript(String fileName){
         InputStream is  = getClass().getClassLoader().getResourceAsStream(fileName);
         new ScriptRunner(connection).runScript(new InputStreamReader(is));
+
     }
 
 }
