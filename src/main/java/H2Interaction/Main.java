@@ -27,7 +27,7 @@ public class Main {
         upgrader.initialiseConnection();
         upgrader.applyUpgrade(upgrades);
         dataSource.closeConnection();
-        System.g
+
     }
 
     public static void main(String[] args) throws IOException {
